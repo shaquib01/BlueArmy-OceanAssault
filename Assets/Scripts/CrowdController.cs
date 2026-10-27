@@ -17,14 +17,20 @@ public class CrowdController : MonoBehaviour
     readonly List<Transform> soldiers = new();
     float targetX, velocityX;
     bool dragging;
+    bool initialized;
     Vector2 lastPointer;
     public int Count => soldiers.Count;
     public float ForwardSpeed => forwardSpeed;
 
-    void Start() => SetCount(startingSoldiers);
+    void Start()
+    {
+        initialized = true;
+        SetCount(startingSoldiers);
+    }
 
     void Update()
     {
+        if (GameManager.Instance && Time.timeScale == 0f) return;
         ReadPointer();
         targetX = Mathf.Clamp(targetX, -horizontalLimit, horizontalLimit);
         Vector3 p = transform.position;
@@ -77,7 +83,12 @@ public class CrowdController : MonoBehaviour
             soldiers.RemoveAt(i);
         }
         ArrangeFormation();
-        if (GameManager.Instance) GameManager.Instance.SetCrowdCount(Count);
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.SetCrowdCount(Count);
+            if (initialized && Count == 0)
+                GameManager.Instance.EndRun(false);
+        }
     }
 
     void ArrangeFormation()
