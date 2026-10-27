@@ -4,13 +4,19 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 using System.IO;
 
 public static class PrototypeSceneBuilder
 {
     const string Root = "Assets/BlueArmyGenerated";
     [MenuItem("Tools/Blue Army/Build Prototype Scene")]
-    public static void Build()
+    public static void Build() => BuildScene(true);
+
+    // Entry point used by headless CI builds; never opens editor dialogs.
+    public static void BuildForCI() => BuildScene(false);
+
+    static void BuildScene(bool showDialog)
     {
         if (!AssetDatabase.IsValidFolder(Root)) AssetDatabase.CreateFolder("Assets", "BlueArmyGenerated");
         if (!AssetDatabase.IsValidFolder(Root + "/Prefabs")) AssetDatabase.CreateFolder(Root, "Prefabs");
@@ -99,6 +105,11 @@ public static class PrototypeSceneBuilder
 
         GameObject manager = new GameObject("GameManager");
         GameManager gm = manager.AddComponent<GameManager>();
+        if (!Object.FindObjectOfType<EventSystem>())
+        {
+            GameObject eventSystem = new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
+        }
+
         Canvas canvas = new GameObject("HUD", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster)).GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         CanvasScaler scaler = canvas.GetComponent<CanvasScaler>(); scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -139,7 +150,7 @@ public static class PrototypeSceneBuilder
         EditorSceneManager.SaveScene(scene, scenePath);
         EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(scenePath, true) };
         AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
-        EditorUtility.DisplayDialog("Blue Army", "Prototype scene created at " + scenePath + ". Open it and press Play.", "OK");
+        if (showDialog) EditorUtility.DisplayDialog("Blue Army", "Prototype scene created at " + scenePath + ". Open it and press Play.", "OK");
     }
 
     static void MakeGate(string name, Vector3 pos, Material mat, MultiplierGate.Operation op, int value)
