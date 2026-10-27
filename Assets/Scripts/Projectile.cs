@@ -11,17 +11,30 @@ public class Projectile : MonoBehaviour
 
     public void Initialize(float moveSpeed, int hitDamage, Transform shooterRoot)
     {
-        speed = moveSpeed; damage = Mathf.Max(1, hitDamage); owner = shooterRoot;
+        speed = moveSpeed;
+        damage = Mathf.Max(1, hitDamage);
+        owner = shooterRoot;
         Destroy(gameObject, lifetime);
     }
 
-    void Update() => transform.position += transform.forward * speed * Time.deltaTime;
-
-    void OnTriggerEnter(Collider other)
+    void Update()
     {
-        if (spent || (owner && other.transform.root == owner)) return;
+        if (spent) return;
+        transform.position += transform.forward * speed * Time.deltaTime;
+    }
+
+    void OnTriggerEnter(Collider other) => TryHit(other);
+
+    void OnCollisionEnter(Collision collision) => TryHit(collision.collider);
+
+    void TryHit(Collider other)
+    {
+        if (spent || !other) return;
+        if (owner && (other.transform == owner || other.transform.IsChildOf(owner))) return;
+
         Damageable target = other.GetComponentInParent<Damageable>();
         if (!target) return;
+
         spent = true;
         target.TakeDamage(damage);
         if (impactEffect) Instantiate(impactEffect, transform.position, Quaternion.identity);
