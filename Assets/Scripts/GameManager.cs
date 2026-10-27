@@ -13,26 +13,49 @@ public class GameManager : MonoBehaviour
     int coins;
     bool ended;
 
+    public int Coins => coins;
+    public bool HasEnded => ended;
+
     void Awake()
     {
         if (Instance && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         if (resultPanel) resultPanel.SetActive(false);
     }
+
     void Start() { RefreshCoins(); }
-    public void SetCrowdCount(int count) { if (crowdText) crowdText.text = "SOLDIERS  " + count; }
+
+    void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
+
+    public void SetCrowdCount(int count)
+    {
+        if (crowdText) crowdText.text = "SOLDIERS  " + count;
+    }
+
+    public void AddCoins(int amount)
+    {
+        if (ended || amount <= 0) return;
+        coins += amount;
+        RefreshCoins();
+    }
+
     public void SetBossHealth(int current, int max)
     {
         if (!bossHealthSlider) return;
         bossHealthSlider.maxValue = Mathf.Max(1, max);
         bossHealthSlider.value = current;
     }
+
     public void TargetDefeated(Damageable target, int reward, bool isBoss)
     {
-        coins += Mathf.Max(0, reward);
-        RefreshCoins();
+        if (ended) return;
+        AddCoins(Mathf.Max(0, reward));
         if (isBoss) EndRun(true);
     }
+
     public void EndRun(bool won)
     {
         if (ended) return;
@@ -41,10 +64,15 @@ public class GameManager : MonoBehaviour
         if (resultPanel) resultPanel.SetActive(true);
         if (resultText) resultText.text = won ? "VICTORY!  +" + coins + " COINS" : "RUN OVER";
     }
+
     public void Restart()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    void RefreshCoins() { if (coinsText) coinsText.text = "COINS  " + coins; }
+
+    void RefreshCoins()
+    {
+        if (coinsText) coinsText.text = "COINS  " + coins;
+    }
 }
