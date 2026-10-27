@@ -10,7 +10,7 @@
 - Added an EventSystem with a legacy input module to the generated HUD so the restart button can receive UI events.
 - Added a headless-safe scene-generation entry point for CI.
 - Added `Assets/Editor/BuildAndroid.cs`, a Unity build method that generates the prototype scene and produces an ARM64 Android APK.
-- Added a Unity 2022.3 project version, package manifest, and GitHub Actions workflow for manual APK builds and tagged releases.
+- Added a Unity 2022.3 project version, package manifest including Unity UI, and GitHub Actions workflow for manual APK builds and tagged releases.
 - Updated README with setup and release instructions.
 
 ### Release pipeline status
