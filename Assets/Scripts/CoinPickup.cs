@@ -4,7 +4,14 @@ using UnityEngine;
 public class CoinPickup : MonoBehaviour
 {
     [SerializeField, Min(1)] int value = 1;
+    [SerializeField] float spinSpeed = 180f;
     bool collected;
+
+    void Update()
+    {
+        if (Time.timeScale > 0f)
+            transform.Rotate(Vector3.forward, spinSpeed * Time.deltaTime, Space.Self);
+    }
 
     void OnTriggerEnter(Collider other)
     {
