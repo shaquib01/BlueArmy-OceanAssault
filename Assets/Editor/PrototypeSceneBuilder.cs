@@ -93,6 +93,18 @@ public static class PrototypeSceneBuilder
             SerializedObject dso = new SerializedObject(d); dso.FindProperty("maxHealth").intValue = 10; dso.ApplyModifiedPropertiesWithoutUndo();
         }
 
+        // Place optional coin lines between gates and combat encounters.
+        float[] coinRows = { 20f, 35f, 51f, 66f, 76f };
+        float[] coinLanes = { -2.1f, 0f, 2.1f };
+        int coinIndex = 0;
+        foreach (float z in coinRows)
+        {
+            foreach (float x in coinLanes)
+            {
+                MakeCoin("CoinPickup_" + (++coinIndex), new Vector3(x, .55f, z), gold);
+            }
+        }
+
         GameObject boss = GameObject.CreatePrimitive(PrimitiveType.Cube);
         boss.name = "GiantBoss"; boss.transform.position = new Vector3(0, 1.2f, 83);
         boss.transform.localScale = new Vector3(4, 3, 2); boss.GetComponent<Renderer>().sharedMaterial = red;
@@ -151,6 +163,22 @@ public static class PrototypeSceneBuilder
         EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(scenePath, true) };
         AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
         if (showDialog) EditorUtility.DisplayDialog("Blue Army", "Prototype scene created at " + scenePath + ". Open it and press Play.", "OK");
+    }
+
+    static void MakeCoin(string name, Vector3 pos, Material mat)
+    {
+        GameObject coin = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        coin.name = name;
+        coin.transform.position = pos;
+        coin.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+        coin.transform.localScale = new Vector3(.38f, .07f, .38f);
+        coin.GetComponent<Renderer>().sharedMaterial = mat;
+        Collider collider = coin.GetComponent<Collider>();
+        collider.isTrigger = true;
+        Rigidbody body = coin.AddComponent<Rigidbody>();
+        body.isKinematic = true;
+        body.useGravity = false;
+        coin.AddComponent<CoinPickup>();
     }
 
     static void MakeGate(string name, Vector3 pos, Material mat, MultiplierGate.Operation op, int value)
