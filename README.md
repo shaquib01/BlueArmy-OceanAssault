@@ -25,7 +25,7 @@ The scene builder creates the greybox environment and prefabs. It can also run h
 - Soldiers automatically fire at damageable obstacles and the boss.
 - Coins are awarded for defeated targets and coin pickups; the wallet total is saved locally between runs with Unity PlayerPrefs, while the result panel shows the current run's earnings. This is local device storage, not cloud sync or tamper-proof storage.
 - Losing all soldiers ends the run; defeating the boss wins it.
-- Restart returns to a fresh run.
+- Pause freezes gameplay and offers Resume or Restart; restart returns to a fresh run.
 
 ## Android APK build and releases
 
