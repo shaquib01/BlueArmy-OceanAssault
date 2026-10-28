@@ -1,5 +1,16 @@
 # Blue Army: Ocean Assault — Development Log
 
+## v0.7 — Input reliability pass
+
+### Implemented and committed
+- Updated crowd steering to process active touch input first and skip mouse input in the same frame. This avoids doubled horizontal movement on Android devices that emulate mouse events from touch.
+- Change commit: `b0feea9bcc8e1b3884dc5b02ebe65a611cb69c8d`.
+
+### Validation status
+- Earlier Android Back/Escape handling passed CI in [run 40722051212](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40722051212).
+- The combined bridge-visual and documentation build [run 40722128742](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40722128742) was still in progress when checked; artifact publication was pending.
+- The touch/mouse steering fix is committed and will trigger its own Android build. Device-level touch testing is still required.
+
 ## v0.6 — Bridge visuals and back-button pause
 
 ### Implemented and committed
