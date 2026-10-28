@@ -5,7 +5,7 @@ A Unity 3D portrait runner prototype: lead a growing blue-soldier squad across a
 ## Project requirements
 
 - Unity **2022.3 LTS** with the **Android Build Support** module (Android SDK & NDK + OpenJDK).
-- The repository now contains the Unity project scaffold, source assets, and an Android build entry point.
+- The repository contains the Unity project scaffold, source assets, and an Android build entry point.
 - To open locally, clone this repository and open its root folder in Unity Hub.
 
 ## Play the prototype in the Editor
@@ -31,9 +31,17 @@ The scene builder creates the greybox environment and prefabs. It can also run h
 
 The GitHub Actions workflow at `.github/workflows/android-apk.yml` builds an APK on pushes to `main`, when manually started, or when a `v*` tag is pushed. Successful runs publish an APK artifact; tagged successful builds also attach `BlueArmy-OceanAssault.apk` to a GitHub Release.
 
-**One-time repository setup is required:** add a valid Unity Personal/Pro license activation file as the repository Actions secret named `UNITY_LICENSE` (Repository → Settings → Secrets and variables → Actions). GitHub Actions cannot legally activate Unity without the project's authorized license. Then open **Actions → Android APK → Run workflow**. A successful run publishes the APK as a downloadable workflow artifact; pushing a tag such as `v0.1.0` also publishes a GitHub Release.
+### One-time Unity CI license setup
 
-The workflow configuration was corrected in commit `ce472196d02f880e357e1616f52f70afb808827e` to remove an unsupported action input and pin Unity 2022.3.62f1. The previous run also showed a Unity license activation error, which must be resolved by Unity's licensing process. No APK is claimed to exist until a workflow run succeeds. Check the Actions run and install/test the APK on a physical Android device before calling it production-ready.
+1. In Unity Hub, sign in to the Unity account that owns the Personal license.
+2. Open **Unity Hub → Settings/Preferences → Licenses** and ensure the Personal license is activated. If necessary, use **Add → Get a free Personal license** so Unity creates the license file.
+3. On Windows, GameCI documents the license file path as `C:\\ProgramData\\Unity\\Unity_lic.ulf`. Copy the *contents* of that file into the repository Actions secret `UNITY_LICENSE`.
+4. Add/update `UNITY_EMAIL` (the Unity account email) and `UNITY_PASSWORD` (the account password) in **Repository → Settings → Secrets and variables → Actions**. Never commit these values or paste them into issues/chat.
+5. Open **Actions → Android APK → Run workflow** and inspect the logs if it fails.
+
+Official setup reference: [GameCI GitHub Activation](https://game.ci/docs/github/activation/). If the account uses Google sign-in, confirm the Unity account has a password usable for CI authentication; don't assume the Google login password is automatically available to GameCI.
+
+The workflow configuration was corrected in commit `ce472196d02f880e357e1616f52f70afb808827e` to remove an unsupported action input and pin Unity 2022.3.62f1. A previous run showed a Unity license activation error, so no APK is claimed to exist until a workflow run succeeds. Install and test the APK on a physical Android device before calling it production-ready.
 
 ## Current prototype limitations
 
