@@ -1,5 +1,19 @@
 # Blue Army: Ocean Assault — Development Log
 
+## v0.5 — Pause menu and documentation sync
+
+### Implemented and committed
+- Added a Pause button to the generated HUD; pausing freezes gameplay with `Time.timeScale` and opens a panel with Resume and Restart Run actions.
+- Resume restores normal time scale; restart also restores time scale before reloading the active scene.
+- Updated README gameplay notes to describe the pause/resume controls and clarified persistent wallet storage is local-only.
+- Commits: `4c2d8ce839c3c844da8ef53a13b4c9894e5ba01d` (pause state handling), `af92eb97b062841c708267cec4637bc99ddf471a` (generated HUD), `03ee31a108db51ecba30bc9c258f7297ed0fd978` (README).
+
+### Validation status
+- The previous wallet-enabled Android build succeeded in [run 40715244952](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40715244952), with artifact ID `12828661697`.
+- Pause-menu changes are committed, but a new CI build and in-editor interaction test are pending.
+- Physical-device pause/resume, restart, and wallet persistence tests remain pending.
+
+
 ## v0.3 — Gameplay reliability and Android build pipeline
 
 ## v0.4 — Persistent coin wallet
@@ -46,7 +60,7 @@
 1. Install the published APK on Android and smoke-test launch, orientation, touch input, and restart.
 2. Test gates, collisions, zero-squad defeat, boss victory, coins, and restart; capture any crash/logcat output.
 3. Fix any reproducible runtime issues and verify a new APK artifact.
-4. Add a pause/settings flow, audio, feedback, and tutorial; the persistent local coin wallet is now implemented.
+4. Validate the pause/settings flow, then add audio, feedback, and tutorial; the persistent local coin wallet is implemented.
 5. Replace primitive visuals with original optimized low-poly models, animations, and VFX; profile memory and frame rate on low/mid-range Android devices.
 
 ## Validation checklist
