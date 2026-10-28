@@ -12,8 +12,8 @@
 - Code commits: `d0484bf9e2d43908b2c03cff8cc025ed00e83feb` (wallet) and `d9f444e1e4ee4596c2324d54ccf7349e4e15844e` (integer-safe balance cap).
 
 ### Validation status
-- This change has been committed but its new Android CI build and runtime behavior still need verification.
-- PlayerPrefs persistence has not yet been tested across app force-stop/relaunch on a physical Android device.
+- Android CI build and artifact upload are verified in [run 40715244952](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40715244952), commit `28c895bda102619aa1379677910f596c9bb33358`; artifact ID `12828661697` expires 2026-11-27.
+- CI confirms the wallet-enabled project builds and publishes an APK. PlayerPrefs persistence still needs force-stop/relaunch testing on a physical Android device.
 
 
 ### Implemented and committed
@@ -46,7 +46,7 @@
 1. Install the published APK on Android and smoke-test launch, orientation, touch input, and restart.
 2. Test gates, collisions, zero-squad defeat, boss victory, coins, and restart; capture any crash/logcat output.
 3. Fix any reproducible runtime issues and verify a new APK artifact.
-4. Add a persistent wallet/save system, pause/settings flow, audio, feedback, and tutorial.
+4. Add a pause/settings flow, audio, feedback, and tutorial; the persistent local coin wallet is now implemented.
 5. Replace primitive visuals with original optimized low-poly models, animations, and VFX; profile memory and frame rate on low/mid-range Android devices.
 
 ## Validation checklist
@@ -60,8 +60,8 @@
 - [ ] Boss defeat awards coins and shows victory.
 - [ ] Coin pickup adds its value once.
 - [ ] Restart works and restores time scale.
-- [ ] GitHub Actions produces an installable APK.
-- [ ] Install and test on real Android hardware.
+- [x] GitHub Actions produces and uploads an Android APK artifact (installability on a physical device still needs testing).
+- [ ] Install and test on real Android hardware, including wallet persistence across force-stop/relaunch.
 
 ## Git workflow
 Pull the latest source on the Windows computer with `git pull origin main`. Exclude Unity-generated folders such as `Library/`, `Temp/`, `Obj/`, `Logs/`, and local build output from source control.
