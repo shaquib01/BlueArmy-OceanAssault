@@ -145,3 +145,10 @@ Pull the latest source on the Windows computer with `git pull origin main`. Excl
 - Rationale: recent documentation commits were triggering full Unity builds and cancelling useful runs under the per-ref concurrency rule. This change reduces unnecessary build churn and preserves build minutes.
 - Commit: `dfb914716ec8665dca89ea3133f36ec9ba982d8c`.
 - Validation: workflow trigger edited and committed; GitHub Actions will validate the workflow on subsequent eligible runs. Documentation-only pushes are intentionally skipped, so this log-only follow-up does not itself produce a new APK.
+
+
+### Gameplay safety — squad-count overflow — 2026-10-28
+- Hardened `CrowdController.AddSoldiers`: addition now uses a 64-bit intermediate before applying the configured squad cap. An unusually large gate value can no longer overflow a 32-bit integer and accidentally shrink or empty the squad.
+- The resulting count is capped to a non-negative `maxSoldiers` value before being passed to `SetCount`.
+- Code commit: `d10d2522e328bd19bfd42b20f1cabf3d9211377b`.
+- Validation: source-level change committed. Unity compilation and runtime behavior still require the Android CI build and a gameplay smoke test; no Unity Editor or physical device was available here.
