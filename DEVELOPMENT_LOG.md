@@ -12,21 +12,23 @@
 - Added `Assets/Editor/BuildAndroid.cs`, a Unity build method that generates the prototype scene and produces an ARM64 Android APK.
 - Added Unity 2022.3 project configuration and a GitHub Actions Android build workflow.
 - Added a safe preflight step to check required Unity CI secrets without printing their values.
-- Removed the experimental activation-file workflow because the referenced `game-ci/unity-request-activation-file@v2` action is marked deprecated by its maintainers.
+- Removed the experimental activation-file workflow because `game-ci/unity-request-activation-file@v2` is deprecated.
+- Fixed the generated HUD font resource: Unity 2022.3 rejects `Arial.ttf`; scene generation now requests `LegacyRuntime.ttf`.
 
 ### Release pipeline status
 - Android workflow fix commit: `ce472196d02f880e357e1616f52f70afb808827e` removed the unsupported `androidAppBundle` input, pinned Unity to `2022.3.62f1`, and enabled automatic runs on pushes to `main`.
 - Secret preflight commit: `30ac6403bb5b0e2e9de2f0043f7321d5704d35b8`.
 - Deprecated activation workflow removal: `69942a12c085a7cc43d7a3189d29ff85c9d29595`.
-- **APK not yet verified as built or released.** Earlier logs showed Unity license activation failure.
-- Current GameCI GitHub activation instructions recommend activating the Personal license in Unity Hub, ensuring the `.ulf` file exists, then storing its contents as `UNITY_LICENSE`, with account email and password in `UNITY_EMAIL` and `UNITY_PASSWORD`. On Windows the documented license path is `C:\\ProgramData\\Unity\\Unity_lic.ulf`. Since the user previously provided a local `Unity_lic.ulf`, the next practical step is to verify the GitHub secret matches the current active file and that the account email/password secrets are correct; do not expose secret values in chat or source control.
-- Official references: [Current GameCI Activation](https://game.ci/docs/github/activation/), [GameCI Builder](https://game.ci/docs/github/builder/), and [deprecated activation action notice](https://github.com/game-ci/unity-request-activation-file).
-- No Unity Editor/runtime is available in this coding environment, so compilation, scene play testing, APK installation, and device performance remain unverified.
+- CI logs for run [40701954394](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40701954394) confirmed the Unity account login and license retrieval succeeded; the actual blocker was `ArgumentException: Arial.ttf is no longer a valid built in font. Please use LegacyRuntime.ttf` in `PrototypeSceneBuilder.MakeText`. Fixed in commit `fce1a93384a6a1f5f1e15e1c25feec8f3e3f8a3c`.
+- A subsequent workflow run for commit `de591e081d6e1dde11a01d4ef58589c387131c9b` passed the secret preflight and was in progress at the time of inspection. The font fix commit has triggered another run; inspect the Actions page for the latest result.
+- **APK not yet verified as built or released.** Wait for a successful workflow and confirm the artifact exists before claiming an APK is available.
+- GameCI documentation: [Activation](https://game.ci/docs/github/activation/) and [Builder](https://game.ci/docs/github/builder/). Never expose license contents or account credentials in chat or source control.
+- No Unity Editor/runtime is available in this coding environment, so gameplay, APK installation, and device performance remain unverified.
 
 ## Known issues / next work
-1. Verify the existing Unity Personal license file and GitHub secrets, then run the Android workflow and inspect the latest logs for the exact activation failure.
-2. Fix any remaining licensing, compilation, or Android build errors.
-3. Test touch steering, gates, collisions, zero-squad defeat, boss victory, coins, and restart on Android.
+1. Inspect the workflow triggered by the font fix; fix the next concrete error if any.
+2. Verify the APK artifact is produced, then install and smoke-test it on Android.
+3. Test touch steering, gates, collisions, zero-squad defeat, boss victory, coins, and restart.
 4. Add a persistent wallet/save system, pause/settings flow, audio, feedback, and tutorial.
 5. Replace primitive visuals with original optimized low-poly models, animations, and VFX; profile memory and frame rate on low/mid-range Android devices.
 
