@@ -37,6 +37,16 @@ public class GameManager : MonoBehaviour
         RefreshCoins();
     }
 
+    void Update()
+    {
+        // Escape is the Android system-back mapping in the legacy input module and also supports desktop testing.
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (paused) Resume();
+            else if (!ended) TogglePause();
+        }
+    }
+
     void OnDestroy()
     {
         if (Instance == this) Instance = null;
