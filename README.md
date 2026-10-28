@@ -29,11 +29,11 @@ The scene builder creates the greybox environment and prefabs. It can also run h
 
 ## Android APK build and releases
 
-The GitHub Actions workflow at `.github/workflows/android-apk.yml` builds an APK when manually started or when a `v*` tag is pushed. Tagged successful builds attach `BlueArmy-OceanAssault.apk` to a GitHub Release.
+The GitHub Actions workflow at `.github/workflows/android-apk.yml` builds an APK on pushes to `main`, when manually started, or when a `v*` tag is pushed. Successful runs publish an APK artifact; tagged successful builds also attach `BlueArmy-OceanAssault.apk` to a GitHub Release.
 
 **One-time repository setup is required:** add a valid Unity Personal/Pro license activation file as the repository Actions secret named `UNITY_LICENSE` (Repository → Settings → Secrets and variables → Actions). GitHub Actions cannot legally activate Unity without the project's authorized license. Then open **Actions → Android APK → Run workflow**. A successful run publishes the APK as a downloadable workflow artifact; pushing a tag such as `v0.1.0` also publishes a GitHub Release.
 
-This environment can update the repository but does not have the Unity Editor, Android toolchain, or a licensed Unity build runner available to execute the build itself. No APK is claimed to exist until the workflow succeeds. Check the Actions run and install/test the APK on a physical Android device before calling it production-ready.
+The workflow configuration was corrected in commit `ce472196d02f880e357e1616f52f70afb808827e` to remove an unsupported action input and pin Unity 2022.3.62f1. The previous run also showed a Unity license activation error, which must be resolved by Unity's licensing process. No APK is claimed to exist until a workflow run succeeds. Check the Actions run and install/test the APK on a physical Android device before calling it production-ready.
 
 ## Current prototype limitations
 
