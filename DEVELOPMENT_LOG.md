@@ -23,14 +23,15 @@
 - The next run progressed past scene generation but failed with `UnityException: Target architecture not specified`. Build settings are now applied after prototype scene generation; Android is explicitly set to IL2CPP + ARM64 and checked before building, in commit `bb2098c5b65666e203625f7e2959661d2b45a799`.
 - The earlier workflow runs passed the Unity secret preflight but failed during the Unity build. Latest run logs showed `Assets/Editor/BuildAndroid.cs(21,44): error CS0103: The name 'NamedBuildTarget' does not exist in the current context`; this was a C# namespace/import issue, not a licensing failure.
 - The ARM64/IL2CPP follow-up run exposed a compile error: `NamedBuildTarget` is declared in `UnityEditor.Build`. Added that namespace import in commit `73032f3cc6aa9dedcaf076ee39f4a4da18a081ca`; the next Actions run must confirm compilation and reveal any subsequent blocker.
-- **APK not yet verified as built or released.** Wait for a successful workflow and confirm the artifact exists before claiming an APK is available.
+- **APK build verified:** workflow run [40713146565](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40713146565) completed successfully on commit `73032f3cc6aa9dedcaf076ee39f4a4da18a081ca`; Unity build and artifact publish steps both passed. Artifact `BlueArmy-OceanAssault-Android-APK` (artifact ID `12827308230`, about 10.4 MiB) is available until 2026-11-27. The follow-up log-only commit also built successfully in [run 40713158572](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40713158572), producing artifact ID `12826509479`.
+- **Important validation boundary:** CI success verifies that Unity produced and uploaded the APK; it does not prove installability or runtime correctness on a physical device. APK installation, gameplay, touch input, and device performance remain untested.
 - GameCI documentation: [Activation](https://game.ci/docs/github/activation/) and [Builder](https://game.ci/docs/github/builder/). Never expose license contents or account credentials in chat or source control.
 - No Unity Editor/runtime is available in this coding environment, so gameplay, APK installation, and device performance remain unverified.
 
 ## Known issues / next work
-1. Inspect the workflow triggered by commit `73032f3`; fix the next concrete error if any.
-2. Verify the APK artifact is produced, then install and smoke-test it on Android.
-3. Test touch steering, gates, collisions, zero-squad defeat, boss victory, coins, and restart.
+1. Install the published APK on Android and smoke-test launch, orientation, touch input, and restart.
+2. Test gates, collisions, zero-squad defeat, boss victory, coins, and restart; capture any crash/logcat output.
+3. Fix any reproducible runtime issues and verify a new APK artifact.
 4. Add a persistent wallet/save system, pause/settings flow, audio, feedback, and tutorial.
 5. Replace primitive visuals with original optimized low-poly models, animations, and VFX; profile memory and frame rate on low/mid-range Android devices.
 
