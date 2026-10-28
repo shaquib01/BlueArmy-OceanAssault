@@ -158,3 +158,9 @@ Pull the latest source on the Windows computer with `git pull origin main`. Excl
 - Updated `GameManager.AddCoins` to use a 64-bit intermediate and saturate both the current-run earnings and persistent wallet at `int.MaxValue`. Extremely large configured rewards or long sessions can no longer wrap a counter into a negative value.
 - Code commit: `2f548fbe47f3dd947ddbb01c7a6297414dfa32a2`.
 - Validation: change committed and queued for the Android CI build. Device/runtime smoke testing remains outstanding.
+
+
+### Gate and squad-cap hardening — 2026-10-28
+- Hardened `CrowdController.MultiplySoldiers` to calculate the multiplied squad size in 64-bit integer space and apply a non-negative cap consistently. `SetCount` now also normalizes a negative configured `maxSoldiers` to zero before clamping, avoiding an invalid clamp range from bad Inspector configuration.
+- Code commit: `ba2a1eec4192dd255b188f788517ea6dbb76a7ee`.
+- Validation: committed to `main`; Android CI status is pending and Unity Editor/device runtime testing is still needed.
