@@ -14,8 +14,9 @@
 - Updated README with setup and release instructions.
 
 ### Release pipeline status
-- Workflow and build entry point are committed and the file contents were re-fetched from GitHub for verification.
-- **APK not yet built or released.** A licensed Unity Editor/Android build runner is required. Configure the repository Actions secret `UNITY_LICENSE`, run the Android APK workflow, and inspect the build logs. A `v*` tag publishes the APK as a GitHub Release after a successful build.
+- Workflow file re-fetched from GitHub and corrected in commit `ce472196d02f880e357e1616f52f70afb808827e`: removed the unsupported `androidAppBundle` input, pinned Unity to `2022.3.62f1`, and enabled automatic runs on pushes to `main`.
+- The workflow still requires valid Unity licensing secrets (`UNITY_LICENSE`, `UNITY_EMAIL`, `UNITY_PASSWORD`) and a successful Unity Editor/Android build.
+- **APK not yet verified as built or released.** Previous run logs showed Unity license activation failure. The workflow input warning is fixed, but license activation must succeed before an APK artifact or tagged GitHub Release can be published.
 - No Unity Editor/runtime is available in this coding environment, so compilation, scene play testing, APK installation, and device performance remain unverified.
 
 ## Known issues / next work
