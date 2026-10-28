@@ -1,5 +1,18 @@
 # Blue Army: Ocean Assault — Development Log
 
+## v0.6 — Bridge visuals and back-button pause
+
+### Implemented and committed
+- Added an Escape / Android system-Back shortcut that toggles pause during an active run and resumes if already paused; the game-over state ignores the shortcut.
+- Added lightweight bridge edge rails, repeating rail supports, orange ocean buoys, pale wave markers, and a solid-color sky background in the generated scene. Decorative colliders are removed to avoid unnecessary physics work.
+- Updated README to document the back-button shortcut and point to the latest verified pause-menu APK artifact.
+- Commits: `acec2d88c9816ef52ef3da7609fe3b519577ba27` (back/Escape pause), `8b739ea88e7d9a2a2be40fcf609beca17f838ef0` (bridge/ocean visuals), `b305d743beefc3a0ee168217bffa2497768fd457` (README).
+
+### Validation status
+- The previous pause-menu build succeeded in [run 40720613382](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40720613382), artifact ID `12830357569`.
+- Back-button and generated environment changes are committed; their next CI build is pending.
+- Physical-device testing remains required.
+
 ## v0.5 — Pause menu and documentation sync
 
 ### Implemented and committed
@@ -10,7 +23,7 @@
 
 ### Validation status
 - The previous wallet-enabled Android build succeeded in [run 40715244952](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40715244952), with artifact ID `12828661697`.
-- Pause-menu changes are committed, but a new CI build and in-editor interaction test are pending.
+- Pause-menu changes built successfully in [run 40720613382](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40720613382), artifact ID `12830357569`; an in-editor interaction test is still pending.
 - Physical-device pause/resume, restart, and wallet persistence tests remain pending.
 
 
