@@ -6,9 +6,10 @@
 
 ### Implemented and committed
 - Added a persistent wallet backed by Unity PlayerPrefs. Coins earned from pickups and defeated targets now increase both the current-run reward and the saved wallet balance.
+- Capped the wallet with `System.Math.Min` using integer arithmetic to avoid floating-point precision loss when balances become very large.
 - The HUD now labels the saved total as `WALLET`; the end-of-run panel reports coins earned in that run, so the two values are not conflated.
 - Wallet writes are saved immediately and flushed again when the app pauses or quits.
-- Code commit: `d0484bf9e2d43908b2c03cff8cc025ed00e83feb`.
+- Code commits: `d0484bf9e2d43908b2c03cff8cc025ed00e83feb` (wallet) and `d9f444e1e4ee4596c2324d54ccf7349e4e15844e` (integer-safe balance cap).
 
 ### Validation status
 - This change has been committed but its new Android CI build and runtime behavior still need verification.
