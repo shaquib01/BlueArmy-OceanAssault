@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,19 +12,50 @@ public class Damageable : MonoBehaviour
     [SerializeField] UnityEvent onDefeated;
     int health;
     bool defeated;
+    Vector3 baseScale;
+    Coroutine hitFeedback;
     public int Health => health;
     public int MaxHealth => maxHealth;
     public bool IsBoss => boss;
 
-    void Awake() { health = Mathf.Max(1, maxHealth); onHealthChanged?.Invoke(health, maxHealth); }
+    void Awake()
+    {
+        health = Mathf.Max(1, maxHealth);
+        baseScale = transform.localScale;
+        onHealthChanged?.Invoke(health, maxHealth);
+    }
     public void TakeDamage(int amount)
     {
         if (defeated || amount <= 0) return;
         health = Mathf.Max(0, health - amount);
+        if (health > 0) PlayHitFeedback();
         onHealthChanged?.Invoke(health, maxHealth);
         if (boss && GameManager.Instance) GameManager.Instance.SetBossHealth(health, maxHealth);
         if (health == 0) Defeat();
     }
+    void PlayHitFeedback()
+    {
+        if (!isActiveAndEnabled) return;
+        if (hitFeedback != null) StopCoroutine(hitFeedback);
+        hitFeedback = StartCoroutine(HitPulse());
+    }
+
+    IEnumerator HitPulse()
+    {
+        const float duration = 0.14f;
+        const float intensity = 0.09f;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float pulse = Mathf.Sin(Mathf.Clamp01(elapsed / duration) * Mathf.PI);
+            transform.localScale = baseScale * (1f + intensity * pulse);
+            yield return null;
+        }
+        transform.localScale = baseScale;
+        hitFeedback = null;
+    }
+
     void Defeat()
     {
         if (defeated) return;
