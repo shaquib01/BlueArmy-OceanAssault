@@ -20,7 +20,10 @@ public class Damageable : MonoBehaviour
 
     void Awake()
     {
-        health = Mathf.Max(1, maxHealth);
+        // Normalize invalid Inspector values once so health and UI events always
+        // agree on a positive maximum health value.
+        maxHealth = Mathf.Max(1, maxHealth);
+        health = maxHealth;
         baseScale = transform.localScale;
         onHealthChanged?.Invoke(health, maxHealth);
     }
