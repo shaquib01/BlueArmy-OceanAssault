@@ -41,7 +41,7 @@ The GitHub Actions workflow at `.github/workflows/android-apk.yml` builds an APK
 
 Official setup reference: [GameCI GitHub Activation](https://game.ci/docs/github/activation/). If the account uses Google sign-in, confirm the Unity account has a password usable for CI authentication; don't assume the Google login password is automatically available to GameCI.
 
-The workflow configuration was corrected in commit `ce472196d02f880e357e1616f52f70afb808827e` to remove an unsupported action input and pin Unity 2022.3.62f1. A previous run showed a Unity license activation error, so no APK is claimed to exist until a workflow run succeeds. Install and test the APK on a physical Android device before calling it production-ready.
+The workflow configuration was corrected in commit `ce472196d02f880e357e1616f52f70afb808827e` to remove an unsupported action input and pin Unity 2022.3.62f1. The Android APK build and artifact upload succeeded in [GitHub Actions run 40713146565](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40713146565). Open that run, then download `BlueArmy-OceanAssault-Android-APK` from its **Artifacts** section. The artifact expires after 30 days. A successful CI build is not the same as device validation: install and test the APK on physical Android hardware before calling it production-ready.
 
 ## Current prototype limitations
 
