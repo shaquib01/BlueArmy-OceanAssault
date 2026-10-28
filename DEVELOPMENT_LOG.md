@@ -1,5 +1,11 @@
 # Blue Army: Ocean Assault — Development Log
 
+## CI reliability — superseded build cancellation
+
+- Added a GitHub Actions concurrency group keyed by workflow and Git ref, with `cancel-in-progress: true`. Rapid consecutive commits to `main` no longer need to keep every obsolete Unity Android build running; tag builds stay isolated by tag ref.
+- Commit: `96d90dc2f02a070d6b2d1c91c72553bb8a93431a`.
+- Validation: workflow YAML change is committed; the newly triggered run and cancellation behavior still need to reach a terminal status in Actions.
+
 ## v0.9 — Coin pickup readability
 
 ### Implemented and committed
