@@ -13,10 +13,15 @@ public static class BuildAndroid
         PlayerSettings.productName = "Blue Army: Ocean Assault";
         PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, "com.shaquib01.bluearmyoceanassault");
         PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait;
-        PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
         PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel26;
 
         PrototypeSceneBuilder.BuildForCI();
+        // Scene generation imports assets and refreshes editor state; set build-critical
+        // Android settings after it so the final BuildPlayer call sees them.
+        PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingImplementation.IL2CPP);
+        PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
+        if ((PlayerSettings.Android.targetArchitectures & AndroidArchitecture.ARM64) == 0)
+            throw new InvalidOperationException("Android ARM64 target architecture could not be enabled.");
         string[] scenes = EditorBuildSettings.scenes
             .Where(scene => scene.enabled)
             .Select(scene => scene.path)
