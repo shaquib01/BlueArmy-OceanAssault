@@ -213,7 +213,7 @@ public static class PrototypeSceneBuilder
         GameObject go = new GameObject(name, typeof(RectTransform), typeof(Text));
         go.transform.SetParent(parent, false);
         RectTransform rt = go.GetComponent<RectTransform>(); rt.anchorMin = rt.anchorMax = anchor; rt.sizeDelta = new Vector2(520,80); rt.anchoredPosition = Vector2.zero;
-        Text t = go.GetComponent<Text>(); t.text = value; t.font = Resources.GetBuiltinResource<Font>("Arial.ttf"); t.fontSize = size; t.alignment = TextAnchor.MiddleCenter; t.color = Color.white;
+        Text t = go.GetComponent<Text>(); t.text = value; t.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); t.fontSize = size; t.alignment = TextAnchor.MiddleCenter; t.color = Color.white;
         return t;
     }
     static Slider MakeSlider(Transform parent)
