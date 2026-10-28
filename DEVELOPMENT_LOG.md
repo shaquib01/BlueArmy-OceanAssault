@@ -21,13 +21,14 @@
 - Deprecated activation workflow removal: `69942a12c085a7cc43d7a3189d29ff85c9d29595`.
 - CI logs confirmed the initial font blocker (`Arial.ttf`) and the subsequent fix in commit `fce1a93384a6a1f5f1e15e1c25feec8f3e3f8a3c`.
 - The next run progressed past scene generation but failed with `UnityException: Target architecture not specified`. Build settings are now applied after prototype scene generation; Android is explicitly set to IL2CPP + ARM64 and checked before building, in commit `bb2098c5b65666e203625f7e2959661d2b45a799`.
-- A subsequent workflow run for commit `de591e081d6e1dde11a01d4ef58589c387131c9b` passed the secret preflight and was in progress at the time of inspection. The font fix commit has triggered another run; inspect the Actions page for the latest result.
+- The earlier workflow runs passed the Unity secret preflight but failed during the Unity build. Latest run logs showed `Assets/Editor/BuildAndroid.cs(21,44): error CS0103: The name 'NamedBuildTarget' does not exist in the current context`; this was a C# namespace/import issue, not a licensing failure.
+- The ARM64/IL2CPP follow-up run exposed a compile error: `NamedBuildTarget` is declared in `UnityEditor.Build`. Added that namespace import in commit `73032f3cc6aa9dedcaf076ee39f4a4da18a081ca`; the next Actions run must confirm compilation and reveal any subsequent blocker.
 - **APK not yet verified as built or released.** Wait for a successful workflow and confirm the artifact exists before claiming an APK is available.
 - GameCI documentation: [Activation](https://game.ci/docs/github/activation/) and [Builder](https://game.ci/docs/github/builder/). Never expose license contents or account credentials in chat or source control.
 - No Unity Editor/runtime is available in this coding environment, so gameplay, APK installation, and device performance remain unverified.
 
 ## Known issues / next work
-1. Inspect the workflow triggered by the font fix; fix the next concrete error if any.
+1. Inspect the workflow triggered by commit `73032f3`; fix the next concrete error if any.
 2. Verify the APK artifact is produced, then install and smoke-test it on Android.
 3. Test touch steering, gates, collisions, zero-squad defeat, boss victory, coins, and restart.
 4. Add a persistent wallet/save system, pause/settings flow, audio, feedback, and tutorial.
