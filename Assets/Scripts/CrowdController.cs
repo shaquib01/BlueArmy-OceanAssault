@@ -88,14 +88,16 @@ public class CrowdController : MonoBehaviour
     }
     public void MultiplySoldiers(int factor)
     {
-        if (factor > 0) SetCount((int)Mathf.Min(maxSoldiers, (long)Count * factor));
+        if (factor <= 0) return;
+        long requested = (long)Count * factor;
+        SetCount((int)Math.Min(Mathf.Max(0, maxSoldiers), requested));
     }
     public void RemoveSoldiers(int amount) => SetCount(Mathf.Max(0, Count - Mathf.Max(0, amount)));
 
     public void SetCount(int count)
     {
         if (!soldierPrefab) { Debug.LogWarning("CrowdController needs a soldier prefab.", this); return; }
-        count = Mathf.Clamp(count, 0, maxSoldiers);
+        count = Mathf.Clamp(count, 0, Mathf.Max(0, maxSoldiers));
         while (soldiers.Count < count)
             soldiers.Add(Instantiate(soldierPrefab, transform).transform);
         while (soldiers.Count > count)
