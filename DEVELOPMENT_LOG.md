@@ -19,7 +19,8 @@
 - Android workflow fix commit: `ce472196d02f880e357e1616f52f70afb808827e` removed the unsupported `androidAppBundle` input, pinned Unity to `2022.3.62f1`, and enabled automatic runs on pushes to `main`.
 - Secret preflight commit: `30ac6403bb5b0e2e9de2f0043f7321d5704d35b8`.
 - Deprecated activation workflow removal: `69942a12c085a7cc43d7a3189d29ff85c9d29595`.
-- CI logs for run [40701954394](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40701954394) confirmed the Unity account login and license retrieval succeeded; the actual blocker was `ArgumentException: Arial.ttf is no longer a valid built in font. Please use LegacyRuntime.ttf` in `PrototypeSceneBuilder.MakeText`. Fixed in commit `fce1a93384a6a1f5f1e15e1c25feec8f3e3f8a3c`.
+- CI logs confirmed the initial font blocker (`Arial.ttf`) and the subsequent fix in commit `fce1a93384a6a1f5f1e15e1c25feec8f3e3f8a3c`.
+- The next run progressed past scene generation but failed with `UnityException: Target architecture not specified`. Build settings are now applied after prototype scene generation; Android is explicitly set to IL2CPP + ARM64 and checked before building, in commit `bb2098c5b65666e203625f7e2959661d2b45a799`.
 - A subsequent workflow run for commit `de591e081d6e1dde11a01d4ef58589c387131c9b` passed the secret preflight and was in progress at the time of inspection. The font fix commit has triggered another run; inspect the Actions page for the latest result.
 - **APK not yet verified as built or released.** Wait for a successful workflow and confirm the artifact exists before claiming an APK is available.
 - GameCI documentation: [Activation](https://game.ci/docs/github/activation/) and [Builder](https://game.ci/docs/github/builder/). Never expose license contents or account credentials in chat or source control.
