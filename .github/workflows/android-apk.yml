@@ -11,6 +11,12 @@ on:
 permissions:
   contents: write
 
+# Avoid wasting Unity license/build minutes on obsolete commits when several
+# rapid gameplay commits land on the same branch. Tags remain isolated by ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-android:
     name: Build Android APK
