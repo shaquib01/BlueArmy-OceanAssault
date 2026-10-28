@@ -138,3 +138,10 @@ Pull the latest source on the Windows computer with `git pull origin main`. Excl
 - Existing manual pause/resume and result-screen behavior remain unchanged by the callback's guards; already-ended or already-paused runs are not re-paused.
 - Commit: `f419f0e32974ce5509a64821bec4b04806c7db4a`.
 - Validation: source-level edit applied to `Assets/Scripts/GameManager.cs`; Unity/device behavior still requires a successful CI build and Android smoke test. No physical-device test was performed.
+
+
+### CI efficiency — 2026-10-28
+- Updated `.github/workflows/android-apk.yml` so pushes that change only `README.md` and/or `DEVELOPMENT_LOG.md` do not start a Unity Android build. Gameplay/source changes, manual dispatches, and version-tag builds remain eligible to run.
+- Rationale: recent documentation commits were triggering full Unity builds and cancelling useful runs under the per-ref concurrency rule. This change reduces unnecessary build churn and preserves build minutes.
+- Commit: `dfb914716ec8665dca89ea3133f36ec9ba982d8c`.
+- Validation: workflow trigger edited and committed; GitHub Actions will validate the workflow on subsequent eligible runs. Documentation-only pushes are intentionally skipped, so this log-only follow-up does not itself produce a new APK.
