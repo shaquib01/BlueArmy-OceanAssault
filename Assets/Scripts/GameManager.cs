@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
     {
         if (ended || amount <= 0) return;
         runCoins += amount;
-        walletCoins = (int)Mathf.Min(int.MaxValue, (long)walletCoins + amount);
+        walletCoins = (int)Math.Min(int.MaxValue, (long)walletCoins + amount);
         PlayerPrefs.SetInt(WalletKey, walletCoins);
         PlayerPrefs.Save();
         RefreshCoins();
