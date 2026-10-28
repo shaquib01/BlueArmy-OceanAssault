@@ -12,10 +12,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] Text coinsText;
     [SerializeField] Slider bossHealthSlider;
     [SerializeField] GameObject resultPanel;
+    [SerializeField] GameObject pausePanel;
     [SerializeField] Text resultText;
     int runCoins;
     int walletCoins;
     bool ended;
+    bool paused;
 
     public int Coins => walletCoins;
     public int RunCoins => runCoins;
@@ -27,6 +29,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         walletCoins = Mathf.Max(0, PlayerPrefs.GetInt(WalletKey, 0));
         if (resultPanel) resultPanel.SetActive(false);
+        if (pausePanel) pausePanel.SetActive(false);
     }
 
     void Start()
@@ -87,6 +90,22 @@ public class GameManager : MonoBehaviour
         if (resultText) resultText.text = won
             ? "VICTORY!  +" + runCoins + " COINS"
             : "RUN OVER  +" + runCoins + " COINS";
+    }
+
+    public void TogglePause()
+    {
+        if (ended) return;
+        paused = !paused;
+        Time.timeScale = paused ? 0f : 1f;
+        if (pausePanel) pausePanel.SetActive(paused);
+    }
+
+    public void Resume()
+    {
+        if (ended) return;
+        paused = false;
+        Time.timeScale = 1f;
+        if (pausePanel) pausePanel.SetActive(false);
     }
 
     public void Restart()
