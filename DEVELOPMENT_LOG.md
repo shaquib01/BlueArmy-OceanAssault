@@ -131,3 +131,10 @@
 
 ## Git workflow
 Pull the latest source on the Windows computer with `git pull origin main`. Exclude Unity-generated folders such as `Library/`, `Temp/`, `Obj/`, `Logs/`, and local build output from source control.
+
+
+### Android lifecycle safety — 2026-10-28
+- Updated `GameManager.OnApplicationPause` so an active run automatically pauses when Android backgrounds or interrupts the app, opens the existing pause panel, and saves the local coin wallet. This prevents gameplay continuing invisibly during a notification, app switch, or temporary interruption.
+- Existing manual pause/resume and result-screen behavior remain unchanged by the callback's guards; already-ended or already-paused runs are not re-paused.
+- Commit: `f419f0e32974ce5509a64821bec4b04806c7db4a`.
+- Validation: source-level edit applied to `Assets/Scripts/GameManager.cs`; Unity/device behavior still requires a successful CI build and Android smoke test. No physical-device test was performed.
