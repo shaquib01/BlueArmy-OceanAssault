@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -78,7 +79,13 @@ public class CrowdController : MonoBehaviour
         }
     }
 
-    public void AddSoldiers(int amount) => SetCount(Mathf.Min(maxSoldiers, Count + Mathf.Max(0, amount)));
+    public void AddSoldiers(int amount)
+    {
+        // Add in 64-bit space so a large gate value cannot overflow the int
+        // before the squad cap is applied (which could otherwise remove soldiers).
+        long requested = (long)Count + Mathf.Max(0, amount);
+        SetCount((int)Math.Min(Mathf.Max(0, maxSoldiers), requested));
+    }
     public void MultiplySoldiers(int factor)
     {
         if (factor > 0) SetCount((int)Mathf.Min(maxSoldiers, (long)Count * factor));
