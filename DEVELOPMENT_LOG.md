@@ -164,3 +164,9 @@ Pull the latest source on the Windows computer with `git pull origin main`. Excl
 - Hardened `CrowdController.MultiplySoldiers` to calculate the multiplied squad size in 64-bit integer space and apply a non-negative cap consistently. `SetCount` now also normalizes a negative configured `maxSoldiers` to zero before clamping, avoiding an invalid clamp range from bad Inspector configuration.
 - Code commit: `ba2a1eec4192dd255b188f788517ea6dbb76a7ee`.
 - Validation: committed to `main`; Android CI status is pending and Unity Editor/device runtime testing is still needed.
+
+
+### Target health initialization hardening — 2026-10-28
+- Normalized `Damageable.maxHealth` to at least 1 in `Awake` before initializing current health or emitting the initial health event. This keeps runtime health and health UI callbacks consistent if an Inspector value is accidentally set to zero or a negative number.
+- Code commit: `197a43c4cd3565d0171f89b5f793283459d6a118`.
+- Validation: committed to `main`; Android CI status pending. Unity Editor and physical-device runtime tests remain outstanding.
