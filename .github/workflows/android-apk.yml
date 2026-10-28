@@ -7,6 +7,10 @@ on:
       - main
     tags:
       - "v*"
+    # Documentation-only edits do not need to consume Unity build minutes.
+    paths-ignore:
+      - "README.md"
+      - "DEVELOPMENT_LOG.md"
 
 permissions:
   contents: write
