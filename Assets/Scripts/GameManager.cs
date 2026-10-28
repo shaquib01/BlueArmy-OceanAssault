@@ -80,7 +80,9 @@ public class GameManager : MonoBehaviour
     public void AddCoins(int amount)
     {
         if (ended || amount <= 0) return;
-        runCoins += amount;
+        // Saturate both counters instead of allowing a long run or unusually
+        // large reward to wrap a signed 32-bit integer into a negative balance.
+        runCoins = (int)Math.Min(int.MaxValue, (long)runCoins + amount);
         walletCoins = (int)Math.Min(int.MaxValue, (long)walletCoins + amount);
         PlayerPrefs.SetInt(WalletKey, walletCoins);
         PlayerPrefs.Save();
