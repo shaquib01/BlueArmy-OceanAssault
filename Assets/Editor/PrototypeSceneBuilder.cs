@@ -30,6 +30,9 @@ public static class PrototypeSceneBuilder
         Material green = Mat("GreenGate", new Color(.1f, .85f, .35f));
         Material red = Mat("BossRed", new Color(.8f, .08f, .12f));
         Material projectileMat = Mat("Projectile", new Color(1f, .9f, .2f));
+        Material railMat = Mat("BridgeRail", new Color(.12f, .32f, .42f));
+        Material buoyMat = Mat("OceanBuoy", new Color(1f, .38f, .12f));
+        Material foamMat = Mat("WaveFoam", new Color(.38f, .88f, .94f));
 
         GameObject projectileObj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         projectileObj.name = "ProjectilePrefab";
@@ -68,6 +71,45 @@ public static class PrototypeSceneBuilder
         GameObject bridge = GameObject.CreatePrimitive(PrimitiveType.Cube);
         bridge.name = "OceanBridge"; bridge.transform.position = new Vector3(0, -.2f, 45);
         bridge.transform.localScale = new Vector3(8, .4f, 110); bridge.GetComponent<Renderer>().sharedMaterial = trackMat;
+
+        // Low-cost bridge edge rails, repeating supports, and ocean markers add depth without external assets.
+        for (int side = -1; side <= 1; side += 2)
+        {
+            GameObject rail = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            rail.name = side < 0 ? "BridgeRail_Left" : "BridgeRail_Right";
+            rail.transform.position = new Vector3(side * 4.05f, .45f, 45f);
+            rail.transform.localScale = new Vector3(.16f, .38f, 108f);
+            rail.GetComponent<Renderer>().sharedMaterial = railMat;
+            Object.DestroyImmediate(rail.GetComponent<Collider>());
+
+            for (int i = 0; i < 14; i++)
+            {
+                GameObject post = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                post.name = "BridgeRailSupport_" + side + "_" + i;
+                post.transform.position = new Vector3(side * 4.05f, .05f, 0f + i * 8f);
+                post.transform.localScale = new Vector3(.22f, .85f, .22f);
+                post.GetComponent<Renderer>().sharedMaterial = railMat;
+                Object.DestroyImmediate(post.GetComponent<Collider>());
+            }
+
+            for (int i = 0; i < 9; i++)
+            {
+                float z = 5f + i * 11f;
+                GameObject buoy = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                buoy.name = "OceanBuoy_" + side + "_" + i;
+                buoy.transform.position = new Vector3(side * (6.2f + (i % 2) * .5f), -.1f, z);
+                buoy.transform.localScale = new Vector3(.65f, .8f, .65f);
+                buoy.GetComponent<Renderer>().sharedMaterial = buoyMat;
+                Object.DestroyImmediate(buoy.GetComponent<Collider>());
+
+                GameObject foam = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                foam.name = "OceanFoam_" + side + "_" + i;
+                foam.transform.position = new Vector3(side * (7.2f + (i % 2) * .4f), -.72f, z + 1.5f);
+                foam.transform.localScale = new Vector3(1.8f, .035f, .22f);
+                foam.GetComponent<Renderer>().sharedMaterial = foamMat;
+                Object.DestroyImmediate(foam.GetComponent<Collider>());
+            }
+        }
 
         GameObject crowdRoot = new GameObject("CrowdRoot");
         CrowdController crowd = crowdRoot.AddComponent<CrowdController>();
@@ -193,6 +235,8 @@ public static class PrototypeSceneBuilder
         Camera cam = Camera.main;
         if (cam)
         {
+            cam.clearFlags = CameraClearFlags.SolidColor;
+            cam.backgroundColor = new Color(.48f, .78f, .9f);
             cam.transform.position = new Vector3(0, 8, -11);
             cam.transform.rotation = Quaternion.Euler(24, 0, 0);
             cam.gameObject.AddComponent<PrototypeCameraFollow>().target = crowdRoot.transform;
