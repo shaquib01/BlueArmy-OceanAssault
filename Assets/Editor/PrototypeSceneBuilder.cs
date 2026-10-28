@@ -139,14 +139,56 @@ public static class PrototypeSceneBuilder
         RectTransform rb = restart.GetComponent<RectTransform>(); rb.anchorMin = new Vector2(.25f,.1f); rb.anchorMax = new Vector2(.75f,.35f); rb.offsetMin = rb.offsetMax = Vector2.zero;
         Text restartText = MakeText(restart.transform, "RestartLabel", "RESTART", new Vector2(.5f,.5f), 28);
         restart.onClick.AddListener(gm.Restart);
+
+        Button pauseButton = new GameObject("PauseButton", typeof(RectTransform), typeof(Image), typeof(Button)).GetComponent<Button>();
+        pauseButton.transform.SetParent(canvas.transform, false);
+        RectTransform pb = pauseButton.GetComponent<RectTransform>();
+        pb.anchorMin = new Vector2(.78f, .9f); pb.anchorMax = new Vector2(.98f, .96f);
+        pb.offsetMin = pb.offsetMax = Vector2.zero;
+        pauseButton.GetComponent<Image>().color = new Color(.04f, .12f, .22f, .9f);
+        Text pauseLabel = MakeText(pauseButton.transform, "PauseLabel", "PAUSE", new Vector2(.5f, .5f), 24);
+        pauseLabel.rectTransform.sizeDelta = new Vector2(200, 70);
+        pauseButton.onClick.AddListener(gm.TogglePause);
+
+        GameObject pausePanel = new GameObject("PausePanel", typeof(RectTransform), typeof(Image));
+        pausePanel.transform.SetParent(canvas.transform, false);
+        RectTransform pp = pausePanel.GetComponent<RectTransform>();
+        pp.anchorMin = new Vector2(.15f, .32f); pp.anchorMax = new Vector2(.85f, .68f);
+        pp.offsetMin = pp.offsetMax = Vector2.zero;
+        pausePanel.GetComponent<Image>().color = new Color(0, 0, 0, .88f);
+        Text pausedTitle = MakeText(pausePanel.transform, "PausedTitle", "PAUSED", new Vector2(.5f, .8f), 42);
+        pausedTitle.rectTransform.sizeDelta = new Vector2(500, 80);
+
+        Button resumeButton = new GameObject("ResumeButton", typeof(RectTransform), typeof(Image), typeof(Button)).GetComponent<Button>();
+        resumeButton.transform.SetParent(pausePanel.transform, false);
+        RectTransform resumeRect = resumeButton.GetComponent<RectTransform>();
+        resumeRect.anchorMin = new Vector2(.2f, .42f); resumeRect.anchorMax = new Vector2(.8f, .64f);
+        resumeRect.offsetMin = resumeRect.offsetMax = Vector2.zero;
+        resumeButton.GetComponent<Image>().color = new Color(.05f, .55f, .25f, 1f);
+        Text resumeLabel = MakeText(resumeButton.transform, "ResumeLabel", "RESUME", new Vector2(.5f, .5f), 28);
+        resumeLabel.rectTransform.sizeDelta = new Vector2(480, 80);
+        resumeButton.onClick.AddListener(gm.Resume);
+
+        Button pauseRestartButton = new GameObject("PauseRestartButton", typeof(RectTransform), typeof(Image), typeof(Button)).GetComponent<Button>();
+        pauseRestartButton.transform.SetParent(pausePanel.transform, false);
+        RectTransform prbRect = pauseRestartButton.GetComponent<RectTransform>();
+        prbRect.anchorMin = new Vector2(.2f, .12f); prbRect.anchorMax = new Vector2(.8f, .34f);
+        prbRect.offsetMin = prbRect.offsetMax = Vector2.zero;
+        pauseRestartButton.GetComponent<Image>().color = new Color(.65f, .12f, .12f, 1f);
+        Text pauseRestartLabel = MakeText(pauseRestartButton.transform, "RestartLabel", "RESTART RUN", new Vector2(.5f, .5f), 26);
+        pauseRestartLabel.rectTransform.sizeDelta = new Vector2(480, 80);
+        pauseRestartButton.onClick.AddListener(gm.Restart);
+
         SerializedObject gmso = new SerializedObject(gm);
         gmso.FindProperty("crowdText").objectReferenceValue = crowdText;
         gmso.FindProperty("coinsText").objectReferenceValue = coinsText;
         gmso.FindProperty("bossHealthSlider").objectReferenceValue = bossSlider;
         gmso.FindProperty("resultPanel").objectReferenceValue = resultPanel;
+        gmso.FindProperty("pausePanel").objectReferenceValue = pausePanel;
         gmso.FindProperty("resultText").objectReferenceValue = resultText;
         gmso.ApplyModifiedPropertiesWithoutUndo();
         resultPanel.SetActive(false);
+        pausePanel.SetActive(false);
 
         Camera cam = Camera.main;
         if (cam)
