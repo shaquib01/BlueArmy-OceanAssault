@@ -152,3 +152,9 @@ Pull the latest source on the Windows computer with `git pull origin main`. Excl
 - The resulting count is capped to a non-negative `maxSoldiers` value before being passed to `SetCount`.
 - Code commit: `d10d2522e328bd19bfd42b20f1cabf3d9211377b`.
 - Validation: source-level change committed. Unity compilation and runtime behavior still require the Android CI build and a gameplay smoke test; no Unity Editor or physical device was available here.
+
+
+### Gameplay safety — coin counter overflow — 2026-10-28
+- Updated `GameManager.AddCoins` to use a 64-bit intermediate and saturate both the current-run earnings and persistent wallet at `int.MaxValue`. Extremely large configured rewards or long sessions can no longer wrap a counter into a negative value.
+- Code commit: `2f548fbe47f3dd947ddbb01c7a6297414dfa32a2`.
+- Validation: change committed and queued for the Android CI build. Device/runtime smoke testing remains outstanding.
