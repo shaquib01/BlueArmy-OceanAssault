@@ -42,24 +42,39 @@ public class CrowdController : MonoBehaviour
 
     void ReadPointer()
     {
-        if (Input.GetMouseButtonDown(0)) { dragging = true; lastPointer = Input.mousePosition; }
+        // Android can emulate mouse input for the same touch. Process touch OR mouse,
+        // never both in one frame, to avoid doubled steering on some devices.
+        if (Input.touchCount > 0)
+        {
+            Touch t = Input.GetTouch(0);
+            if (t.phase == TouchPhase.Began)
+            {
+                dragging = true;
+                lastPointer = t.position;
+            }
+            else if (t.phase == TouchPhase.Moved && dragging)
+            {
+                targetX += (t.position.x - lastPointer.x) * horizontalSensitivity;
+                lastPointer = t.position;
+            }
+            else if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled)
+            {
+                dragging = false;
+            }
+            return;
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            dragging = true;
+            lastPointer = Input.mousePosition;
+        }
         if (Input.GetMouseButtonUp(0)) dragging = false;
         if (Input.GetMouseButton(0) && dragging)
         {
             Vector2 now = Input.mousePosition;
             targetX += (now.x - lastPointer.x) * horizontalSensitivity;
             lastPointer = now;
-        }
-        if (Input.touchCount > 0)
-        {
-            Touch t = Input.GetTouch(0);
-            if (t.phase == TouchPhase.Began) { dragging = true; lastPointer = t.position; }
-            else if (t.phase == TouchPhase.Moved && dragging)
-            {
-                targetX += (t.position.x - lastPointer.x) * horizontalSensitivity;
-                lastPointer = t.position;
-            }
-            else if (t.phase is TouchPhase.Ended or TouchPhase.Canceled) dragging = false;
         }
     }
 
