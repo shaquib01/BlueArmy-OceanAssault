@@ -41,6 +41,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          name: Blue Army: Ocean Assault ${{ github.ref_name }}
+          name: "Blue Army: Ocean Assault ${{ github.ref_name }}"
           generate_release_notes: true
           files: Builds/Android/BlueArmy-OceanAssault.apk
