@@ -2,6 +2,19 @@
 
 ## v0.3 — Gameplay reliability and Android build pipeline
 
+## v0.4 — Persistent coin wallet
+
+### Implemented and committed
+- Added a persistent wallet backed by Unity PlayerPrefs. Coins earned from pickups and defeated targets now increase both the current-run reward and the saved wallet balance.
+- The HUD now labels the saved total as `WALLET`; the end-of-run panel reports coins earned in that run, so the two values are not conflated.
+- Wallet writes are saved immediately and flushed again when the app pauses or quits.
+- Code commit: `d0484bf9e2d43908b2c03cff8cc025ed00e83feb`.
+
+### Validation status
+- This change has been committed but its new Android CI build and runtime behavior still need verification.
+- PlayerPrefs persistence has not yet been tested across app force-stop/relaunch on a physical Android device.
+
+
 ### Implemented and committed
 - Improved soldier target acquisition: soldiers now search raycast hits for the nearest valid `Damageable`, instead of stopping at the first unrelated collider.
 - Paused-time guard prevents auto-shooters from continuing to fire when the run has ended.
