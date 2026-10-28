@@ -23,7 +23,7 @@ The scene builder creates the greybox environment and prefabs. It can also run h
 - Drag left/right with mouse or touch to steer the squad.
 - Run through green **+N** and gold **×N** gates to grow the squad.
 - Soldiers automatically fire at damageable obstacles and the boss.
-- Coins are awarded for defeated targets and coin pickups.
+- Coins are awarded for defeated targets and coin pickups; the wallet total is saved locally between runs with Unity PlayerPrefs, while the result panel shows the current run's earnings.
 - Losing all soldiers ends the run; defeating the boss wins it.
 - Restart returns to a fresh run.
 
