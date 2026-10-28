@@ -1,5 +1,16 @@
 # Blue Army: Ocean Assault — Development Log
 
+## v0.9 — Coin pickup readability
+
+### Implemented and committed
+- Added a small vertical bob animation to coin pickups alongside their existing spin, making collectibles easier to notice against the bridge.
+- Animation uses a sine wave and pauses with gameplay; it creates no extra objects or per-frame allocations.
+- Commit: `8d9625582a974522eb53ab0ec243da295bd61d74`.
+
+### Validation status
+- Recent Unity Android workflows were still running in the latest status check. The bridge visual workflow [40722128742](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40722128742) has since completed successfully; input and hit-feedback workflows remain pending confirmation.
+- Coin bobbing has triggered a new Android build; visual timing and pickup collision behavior still need Editor/device testing.
+
 ## v0.8 — Combat hit feedback
 
 ### Implemented and committed
