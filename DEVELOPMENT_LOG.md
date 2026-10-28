@@ -1,5 +1,16 @@
 # Blue Army: Ocean Assault — Development Log
 
+## v0.8 — Combat hit feedback
+
+### Implemented and committed
+- Added a short, lightweight scale pulse when a damageable target takes non-lethal damage, giving hits visible feedback without requiring extra materials, particles, or per-hit object creation.
+- Repeated hits restart the pulse cleanly; the target returns to its cached base scale after the effect.
+- Commit: `6be93a24ade6ba703712c1df76276b37b363ab5b`.
+
+### Validation status
+- Android CI runs for recent input and bridge changes were still active when last checked; see [steering fix run](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40722999502) and [bridge/log run](https://github.com/shaquib01/BlueArmy-OceanAssault/actions/runs/40722128742).
+- This combat-feedback change has triggered a new Android build. Confirm CI completion and test hit readability in Unity/Android before treating the effect as runtime-verified.
+
 ## v0.7 — Input reliability pass
 
 ### Implemented and committed
