@@ -52,9 +52,19 @@ public class GameManager : MonoBehaviour
         if (Instance == this) Instance = null;
     }
 
-    void OnApplicationPause(bool paused)
+    void OnApplicationPause(bool applicationPaused)
     {
-        if (paused) PlayerPrefs.Save();
+        if (applicationPaused)
+        {
+            PlayerPrefs.Save();
+            // Mobile OS interruptions should not leave the run progressing in the background.
+            if (!ended && !paused)
+            {
+                paused = true;
+                Time.timeScale = 0f;
+                if (pausePanel) pausePanel.SetActive(true);
+            }
+        }
     }
 
     void OnApplicationQuit()
